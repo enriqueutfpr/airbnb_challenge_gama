@@ -1,0 +1,36 @@
+.navbar-nav li
+{
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.nav-item
+{
+ font-size: 15px;
+ font-weight: 500;
+}
+
+.nav-link
+{
+  color: black;
+}
+
+.nav-item:hover
+{
+  border-bottom: 2px solid #ff5a60;
+  transition: linear 0.15s;
+  padding-bottom: 2px;
+}
+
+#acess
+{
+  border: 1px solid #ff5a60;
+  border-radius: 30px;
+  text-align: center;
+}
+
+#acess:hover
+{
+  background-color:#ff5a60;
+  transition: linear 0.2s;
+}
