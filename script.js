@@ -25,7 +25,8 @@ function show_options(data, page_index)
           '<div class="card-body">' +
             '<h4>' + data[item_count].name + '</h4>' +
             '<h6>' + data[item_count].property_type + '</h6>' +
-            '<p>R$' + data[item_count].price + '/Noite</p>' +
+            '<p class="per_day">R$' + data[item_count].price + ',00/Noite</p>' +
+            '<p class="total"></p>'+
           '</div>' +
         '</div>' +
       '</div>')
@@ -71,26 +72,33 @@ function date_update()
 
     dif_time = (result[2]) + (30 * result[1]) + (365 * result[0])
 
-    if(dif_time < 0)
+    let price_total = document.getElementsByClassName('total');
+    let price_day = document.getElementsByClassName('per_day');
+
+    if(dif_time <= 0)
     {
       document.getElementById('messages').innerHTML = (
         '<div class="alert alert-danger" role="alert">'+
         'Erro: Data inválida!'+
         '</div>'    
       )
+      for(i=0; i < price_total.length;i++)
+      {
+        price_total[i].style.visibility = 'hidden';
+      }
     }
-    else
+    else if(dif_time > 0)
     {
+      console.log(dif_time)
       document.getElementById('messages').innerHTML = '';
-
+      let price;
+      for(i=0;i<price_total.length;i++)
+      {
+        price = parseInt((price_day[i].textContent).match(/(\d+)/)[0])
+        price_total[i].style.visibility = 'visible';
+        price_total[i].textContent = 'Total R$'+ price*dif_time+',00'; 
+      }
     }
-    
-    console.log(dif_time);
-
-
-    return(dif_time);
-    
-    
+  
   }
-
 }

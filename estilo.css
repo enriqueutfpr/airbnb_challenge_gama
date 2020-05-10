@@ -65,14 +65,17 @@
   margin-bottom: 0px;
 }
 
-#acess a:hover
+.total
 {
-  background-color:#ff5a60;
-  transition: 0.5s;
-  border-bottom: 0px;
-  border-radius: 30px;
-  padding: 8px;
+  color: rgb(140,140,140);
+  font-size: 17px;
+  text-align: center;
+  display: block;
+  margin-bottom: 0px;
+  visibility: hidden;
 }
+
+
 
 .form-control
 {
@@ -109,4 +112,13 @@
   text-decoration: none;
   text-decoration: underline;
   color: rgb(100,100,100);
+}
+
+#acess a:hover
+{
+  background-color:#ff5a60;
+  transition: 0.5s;
+  border-bottom: 0px;
+  border-radius: 30px;
+  padding: 8px;
 }
