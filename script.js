@@ -1,52 +1,96 @@
 var max_item_row = 3;
 var max_row_qtd= 4;
+const max_elements = max_item_row*max_row_qtd
 
-function getdata()
+async function getdata() 
 {
-  fetch('https://api.sheety.co/30b6e400-9023-4a15-8e6c-16aa4e3b1e72')
-    .then(res => res.json())
-    .then(data => show_options(data, 1))
+  let response = await fetch('https://api.sheety.co/30b6e400-9023-4a15-8e6c-16aa4e3b1e72');
+  let data = await response.json();
+  return data;
 }
 
-fetch('https://api.sheety.co/30b6e400-9023-4a15-8e6c-16aa4e3b1e72')
-  .then(res => res.json())
-  .then(data => show_options(data,1))
+getdata().then(data => show_options(data,1));
 
-function show_options(data,page_index)
+
+function show_options(data, page_index) 
 {
-  console.log(data);
-  let item_count= 0;
-  for (var i = 0; i < max_row_qtd; i++)
+  reset_page();
+  let item_count = (max_elements * (page_index - 1));
+  for(i = item_count; i < (page_index*max_elements);i++)
   {
-    for (var k = 0; k < max_item_row; k++)
-    {
-      document.getElementById('menu').innerHTML += (
-        '<div class=".col-md-4 .col-sm-12">' +
-          '<div class="card">' +
-            '<img class="card-img-top" src="'+data[item_count].photo+'">' +
-              '<div class="card-body">' +
-                '<h4>'+data[item_count].name+'</h4>' +
-                '<h6>'+data[item_count].property_type+'</h6>' +
-                '<p>R$'+data[item_count].price+'/Noite</p>' +
-              '</div>' +
-            '</div>' +
-        '</div>')
-      item_count++;
-    }
+    document.getElementById('menu').innerHTML += (
+      '<div class=".col-md-4 .col-sm-12">' +
+        '<div class="card">' +
+          '<img class="card-img-top" src="' + data[item_count].photo + '">' +
+          '<div class="card-body">' +
+            '<h4>' + data[item_count].name + '</h4>' +
+            '<h6>' + data[item_count].property_type + '</h6>' +
+            '<p>R$' + data[item_count].price + '/Noite</p>' +
+          '</div>' +
+        '</div>' +
+      '</div>')
+    item_count++;
   }
-  
- 
-  let qtt_pages = Math.ceil(data.length/(max_row_qtd*max_item_row));
-  for(i = 1; i <= qtt_pages;i++)
+
+  let qtt_pages = Math.ceil(data.length/(max_row_qtd * max_item_row));
+  for (i = 1; i <= qtt_pages; i++) 
   {
-    document.getElementById('page_index').innerHTML+= (
-      '<li><a href="#" onclick="change_page(this)">'+i+'</a></li>'
+    document.getElementById('page_index').innerHTML += (
+      '<li><a href="#" onclick="change(this)">' + i + '</a></li>'
     )
   }
 }
 
-function change_page(page_index)
+function change(page_index)
 {
-  
-  console.log(parseInt($(page_index).text()));
+  let index = parseInt($(page_index).text());
+  getdata().then(data=>show_options(data,index));
+}
+
+function reset_page()
+{
+  document.getElementById('menu').innerHTML = '';
+  document.getElementById('page_index').innerHTML = '';
+}
+
+setInterval(date_update,3000);
+
+function date_update()
+{
+  let dat_ini = document.getElementsByClassName('form-control')[0].value;
+  let dat_end = document.getElementsByClassName('form-control')[1].value;
+
+  if(!(dat_ini == 0 || dat_end == 0))
+  {
+    let result = [0,0,0]
+    let dif_time = 0;
+    for(var i = 0; i < 3; i++)
+    {
+      result[i] = parseInt(dat_end.split('-')[i])-parseInt(dat_ini.split('-')[i]);
+    }
+
+    dif_time = (result[2]) + (30 * result[1]) + (365 * result[0])
+
+    if(dif_time < 0)
+    {
+      document.getElementById('messages').innerHTML = (
+        '<div class="alert alert-danger" role="alert">'+
+        'Erro: Data inválida!'+
+        '</div>'    
+      )
+    }
+    else
+    {
+      document.getElementById('messages').innerHTML = '';
+
+    }
+    
+    console.log(dif_time);
+
+
+    return(dif_time);
+    
+    
+  }
+
 }
