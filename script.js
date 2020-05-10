@@ -78,7 +78,7 @@ function date_update()
     if(dif_time <= 0)
     {
       document.getElementById('messages').innerHTML = (
-        '<div class="alert alert-danger" role="alert">'+
+        '<div class="alert alert-danger" role="alert" style:text-align: center;>'+
         'Erro: Data inválida!'+
         '</div>'    
       )
